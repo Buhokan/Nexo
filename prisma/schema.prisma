@@ -1,0 +1,254 @@
+// Nexo — Prisma Schema
+// Diseñado para escalar: multi-cuenta, multi-moneda, auth lista para añadir
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ─────────────────────────────────────────────
+// USUARIO — Único en MVP (id = "default")
+// Listo para multi-usuario cuando se añada auth
+// ─────────────────────────────────────────────
+model User {
+  id            String   @id @default(cuid()) // Almacenaremos el clerkId aquí
+  email         String   @unique
+  name          String   @default("Usuario")
+  avatar        String?
+  currency      String   @default("COP")
+  locale        String   @default("es-CO")
+  timezone      String   @default("America/Bogota")
+  monthlyIncome Decimal? @db.Decimal(14, 2)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  transactions        Transaction[]
+  categories          Category[]
+  goals               Goal[]
+  gamificationProfile GamificationProfile?
+  budgets             Budget[]
+
+  @@map("users")
+}
+
+// ─────────────────────────────────────────────
+// CUENTA — Multi-cuenta preparada
+// ─────────────────────────────────────────────
+model Account {
+  id        String      @id @default(cuid())
+  userId    String
+  name      String
+  type      AccountType @default(CASH)
+  balance   Decimal     @db.Decimal(14, 2) @default(0)
+  currency  String      @default("COP")
+  color     String      @default("#7C5CFF")
+  icon      String      @default("wallet")
+  isDefault Boolean     @default(false)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  transactions Transaction[]
+
+  @@map("accounts")
+}
+
+// ─────────────────────────────────────────────
+// CATEGORÍA — Sistema + personalizadas
+// ─────────────────────────────────────────────
+model Category {
+  id          String   @id @default(cuid())
+  userId      String?  // null = categoría del sistema
+  name        String
+  emoji       String
+  icon        String
+  color       String
+  description String?
+  parentId    String?  // Subcategorías futuras
+  isSystem    Boolean  @default(false)
+  isArchived  Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  parent       Category?     @relation("CategoryParent", fields: [parentId], references: [id])
+  children     Category[]    @relation("CategoryParent")
+  user         User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  transactions Transaction[]
+  budgets      Budget[]
+
+  @@map("categories")
+}
+
+// ─────────────────────────────────────────────
+// TRANSACCIÓN — Núcleo de la aplicación
+// ─────────────────────────────────────────────
+model Transaction {
+  id            String          @id @default(cuid())
+  userId        String
+  accountId     String?
+  categoryId    String
+  amount        Decimal         @db.Decimal(14, 2)
+  type          TransactionType @default(EXPENSE)
+  description   String
+  notes         String?
+  date          DateTime        @default(now())
+  paymentMethod PaymentMethod?
+  location      String?         // Futuro: geolocalización
+  receiptUrl    String?         // Futuro: OCR
+  tags          String[]        @default([])
+  isRecurring   Boolean         @default(false)
+  recurringId   String?         // Futuro: gastos recurrentes
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  deletedAt     DateTime?       // Soft delete — nunca perdemos datos
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category Category  @relation(fields: [categoryId], references: [id])
+  account  Account?  @relation(fields: [accountId], references: [id], onDelete: SetNull)
+
+  @@index([userId, date])
+  @@index([userId, categoryId])
+  @@index([userId, type])
+  @@map("transactions")
+}
+
+// ─────────────────────────────────────────────
+// OBJETIVOS DE AHORRO
+// ─────────────────────────────────────────────
+model Goal {
+  id            String     @id @default(cuid())
+  userId        String
+  name          String
+  description   String?
+  targetAmount  Decimal    @db.Decimal(14, 2)
+  currentAmount Decimal    @db.Decimal(14, 2) @default(0)
+  currency      String     @default("COP")
+  deadline      DateTime?
+  imageUrl      String?
+  color         String     @default("#7C5CFF")
+  emoji         String     @default("🎯")
+  status        GoalStatus @default(ACTIVE)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("goals")
+}
+
+// ─────────────────────────────────────────────
+// GAMIFICACIÓN
+// ─────────────────────────────────────────────
+model GamificationProfile {
+  id            String    @id @default(cuid())
+  userId        String    @unique
+  level         Int       @default(1)
+  xp            Int       @default(0)
+  totalXp       Int       @default(0)
+  streak        Int       @default(0)
+  longestStreak Int       @default(0)
+  lastActiveAt  DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievements UserAchievement[]
+
+  @@map("gamification_profiles")
+}
+
+model Achievement {
+  id          String             @id @default(cuid())
+  key         String             @unique
+  name        String
+  description String
+  emoji       String
+  xpReward    Int                @default(50)
+  rarity      AchievementRarity  @default(COMMON)
+
+  userAchievements UserAchievement[]
+
+  @@map("achievements")
+}
+
+model UserAchievement {
+  id              String   @id @default(cuid())
+  profileId       String
+  achievementId   String
+  unlockedAt      DateTime @default(now())
+
+  profile     GamificationProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  achievement Achievement         @relation(fields: [achievementId], references: [id])
+
+  @@unique([profileId, achievementId])
+  @@map("user_achievements")
+}
+
+// ─────────────────────────────────────────────
+// PRESUPUESTOS — Schema listo, UI en Fase 4
+// ─────────────────────────────────────────────
+model Budget {
+  id         String       @id @default(cuid())
+  userId     String
+  categoryId String
+  amount     Decimal      @db.Decimal(14, 2)
+  period     BudgetPeriod @default(MONTHLY)
+  startDate  DateTime
+  endDate    DateTime?
+  createdAt  DateTime     @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id])
+
+  @@map("budgets")
+}
+
+// ─────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────
+enum TransactionType {
+  EXPENSE
+  INCOME
+  TRANSFER
+}
+
+enum PaymentMethod {
+  CASH
+  DEBIT_CARD
+  CREDIT_CARD
+  TRANSFER
+  DIGITAL_WALLET
+  OTHER
+}
+
+enum AccountType {
+  CHECKING
+  SAVINGS
+  CREDIT
+  CASH
+  INVESTMENT
+}
+
+enum GoalStatus {
+  ACTIVE
+  COMPLETED
+  PAUSED
+  CANCELLED
+}
+
+enum AchievementRarity {
+  COMMON
+  RARE
+  EPIC
+  LEGENDARY
+}
+
+enum BudgetPeriod {
+  WEEKLY
+  MONTHLY
+  YEARLY
+}
