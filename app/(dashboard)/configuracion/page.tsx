@@ -78,8 +78,6 @@ export default function SettingsPage() {
                   baseTheme: dark,
                   variables: {
                     colorPrimary: "#7C5CFF",
-                    colorBackground: "#17171F",
-                    colorText: "#F0F0F5",
                   },
                   elements: {
                     card: "bg-transparent shadow-none border-0 p-0",
