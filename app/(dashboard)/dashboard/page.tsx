@@ -301,7 +301,7 @@ export default function DashboardPage() {
                 tick={{ fill: "var(--color-text-subtle)", fontSize: 10 }}
                 axisLine={false}
                 tickLine={false}
-                tickFormatter={(v) => `$${(v / 1000).toFixed(0)}K`}
+                tickFormatter={(v) => formatCurrencyCompact(v, "COP")}
                 width={40}
               />
               <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(124,92,255,0.05)" }} />
@@ -348,7 +348,7 @@ export default function DashboardPage() {
               tick={{ fill: "var(--color-text-subtle)", fontSize: 10 }}
               axisLine={false}
               tickLine={false}
-              tickFormatter={(v) => `$${(v / 1_000_000).toFixed(1)}M`}
+              tickFormatter={(v) => formatCurrencyCompact(v, "COP")}
               width={44}
             />
             <Tooltip content={<CustomTooltip />} />
