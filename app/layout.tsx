@@ -5,6 +5,7 @@ import { QueryProvider } from "@/providers/QueryProvider";
 import { Toaster } from "sonner";
 import { ClerkProvider } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";
+import { ServiceWorkerRegistrar } from "@/components/ServiceWorkerRegistrar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -80,6 +81,7 @@ export default function RootLayout({
           suppressHydrationWarning
         >
           <QueryProvider>
+            <ServiceWorkerRegistrar />
             {children}
             <Toaster theme="dark" position="top-center" richColors />
           </QueryProvider>
