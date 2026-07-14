@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+  <img src="public/icons/icon-512.png" alt="Nexo Logo" width="120" />
+  <h1>Nexo</h1>
+  <p><em>Tus finanzas, bajo control. Tu vida, en equilibrio.</em></p>
+</div>
 
-## Getting Started
+---
 
-First, run the development server:
+## 🌌 El significado de "Nexo"
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+En la vida, el dinero no es un fin en sí mismo; es un **nexo** (un enlace o conexión) entre tu presente y tus metas futuras. 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Cada gasto que haces, cada pequeña meta de ahorro que cumples y cada decisión financiera que tomas está intrínsecamente conectada con tu tranquilidad, tu tiempo y tus sueños. **Nexo** nace para darte claridad sobre esa conexión. No es solo un registro de números y categorías; es el puente que une tu esfuerzo diario con la vida que quieres construir. 
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Al comprender el *nexo* entre lo que gastas hoy y lo que deseas mañana, retomas el control total de tu bienestar financiero.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## ✨ Características Principales
 
-To learn more about Next.js, take a look at the following resources:
+- 📊 **Gestor de Transacciones:** Registra tus ingresos y gastos de forma rápida y categorizada.
+- 🎯 **Objetivos de Ahorro:** Define metas (viajes, emergencias, compras) y visualiza tu progreso con barras animadas.
+- 🎮 **Gamificación (Gamified Finance):** Sube de nivel y gana puntos de experiencia (XP) por mantener rachas positivas y cuidar tus finanzas.
+- 📱 **Progressive Web App (PWA):** Instálala nativamente en tu iPhone o Android y úsala como una app real.
+- 🔒 **Seguridad y Privacidad:** Autenticación robusta y segura respaldada por Clerk. Cada usuario tiene su propia bóveda financiera privada.
+- 🎨 **Diseño Premium:** UI/UX moderna, oscura, con gradientes sutiles y micro-animaciones usando Framer Motion y Tailwind CSS.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠️ Stack Tecnológico
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Framework:** Next.js 15 (App Router)
+- **Lenguaje:** TypeScript
+- **Base de Datos:** PostgreSQL + Prisma ORM
+- **Estilos:** Tailwind CSS v4 + Variables CSS Nativas
+- **Animaciones:** Framer Motion + Canvas Confetti
+- **Gráficos:** Recharts
+- **Autenticación:** Clerk
+- **Despliegue:** Vercel
 
-## Deploy on Vercel
+## 🚀 Instalación y Desarrollo Local
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Clonar el repositorio**
+   ```bash
+   git clone https://github.com/Buhokan/Nexo.git
+   cd nexo
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. **Instalar dependencias**
+   ```bash
+   npm install
+   ```
+
+3. **Configurar variables de entorno**
+   Crea un archivo `.env` en la raíz del proyecto y añade tus credenciales:
+   ```env
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=tu_clave_publica
+   CLERK_SECRET_KEY=tu_clave_secreta
+   DATABASE_URL=tu_url_de_postgres
+   NEXT_PUBLIC_APP_URL=http://localhost:3000
+   ```
+
+4. **Sincronizar la base de datos**
+   ```bash
+   npx prisma db push
+   ```
+
+5. **Iniciar el servidor de desarrollo**
+   ```bash
+   npm run dev
+   ```
+   Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
+
+---
+<div align="center">
+  <i>Construido para hacer que las finanzas personales sean claras, hermosas y gratificantes.</i>
+</div>
