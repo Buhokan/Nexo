@@ -63,9 +63,6 @@ export default function RootLayout({
     <ClerkProvider
       localization={esES}
       appearance={{
-        layout: {
-          logoImageUrl: "/icons/icon-512.png",
-        },
         variables: {
           colorPrimary: "#7C5CFF",
           colorBackground: "#0B0B0F",
