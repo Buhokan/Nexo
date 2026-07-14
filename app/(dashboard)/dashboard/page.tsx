@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import {
   TrendingUp,
   TrendingDown,
@@ -43,7 +43,7 @@ import {
 
 // ─── Animación de entrada ────────────────────────────────────────
 
-const container = {
+const container: Variants = {
   hidden: {},
   show: {
     transition: {
@@ -52,9 +52,9 @@ const container = {
   },
 };
 
-const item = {
+const item: Variants = {
   hidden: { opacity: 0, y: 16 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] } },
+  show:   { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
 // ─── Tooltip personalizado para gráficas ─────────────────────────

@@ -1,7 +1,6 @@
 "use client";
 
 import { UserProfile } from "@clerk/nextjs";
-import { dark } from "@clerk/themes";
 import { Settings, CreditCard, Bell, Shield, Download, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/utils/cn";
@@ -75,7 +74,6 @@ export default function SettingsPage() {
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
               <UserProfile 
                 appearance={{
-                  baseTheme: dark,
                   variables: {
                     colorPrimary: "#7C5CFF",
                   },

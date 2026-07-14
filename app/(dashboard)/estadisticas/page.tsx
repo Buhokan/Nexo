@@ -165,7 +165,7 @@ export default function StatsPage() {
                     <Tooltip 
                       cursor={{ fill: "var(--color-surface-2)" }}
                       contentStyle={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "12px" }}
-                      formatter={(val: number) => [formatCurrency(val, "COP"), "Promedio"]}
+                      formatter={(val: any) => [formatCurrency(val, "COP"), "Promedio"]}
                     />
                     <Bar dataKey="avg" radius={[0, 8, 8, 0]}>
                       {dailyAvg?.map((entry, index) => {
@@ -204,7 +204,7 @@ export default function StatsPage() {
                       <Tooltip 
                         contentStyle={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "12px" }}
                         itemStyle={{ color: "var(--color-text)" }}
-                        formatter={(val: number) => formatCurrency(val, "COP")}
+                        formatter={(val: any) => formatCurrency(val, "COP")}
                       />
                       <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: '12px' }}/>
                     </PieChart>
@@ -238,7 +238,7 @@ export default function StatsPage() {
                     <Tooltip 
                       cursor={{ fill: "var(--color-surface-2)" }}
                       contentStyle={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "16px" }}
-                      formatter={(val: number) => formatCurrency(val, "COP")}
+                      formatter={(val: any) => formatCurrency(val, "COP")}
                     />
                     <Legend wrapperStyle={{ paddingTop: "20px", fontSize: "12px" }} />
                     {trends?.categories.map((catName, idx) => (
