@@ -139,7 +139,7 @@ export async function getSpendingByPaymentMethod(months: number = 1) {
   return stats.map(s => ({
     name: s.paymentMethod,
     value: toNumber(s._sum.amount),
-    fill: colorMap[s.paymentMethod] ?? "#8B8B9E",
+    fill: colorMap[String(s.paymentMethod)] ?? "#8B8B9E",
   })).sort((a, b) => b.value - a.value);
 }
 

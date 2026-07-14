@@ -22,8 +22,9 @@ export function TransactionForm({ onSuccess }: TransactionFormProps) {
     setValue,
     watch,
     formState: { errors },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } = useForm<TransactionInput>({
-    resolver: zodResolver(transactionSchema),
+    resolver: zodResolver(transactionSchema) as any,
     defaultValues: {
       type: "EXPENSE",
       date: new Date(),

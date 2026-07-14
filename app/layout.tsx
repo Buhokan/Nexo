@@ -65,10 +65,6 @@ export default function RootLayout({
         variables: {
           colorPrimary: "#7C5CFF",
           colorBackground: "#0B0B0F",
-          colorInputBackground: "#17171F",
-          colorInputText: "#F0F0F5",
-          colorText: "#F0F0F5",
-          colorTextSecondary: "#8B8B9E",
           borderRadius: "0.75rem",
           fontFamily: "var(--font-geist-sans)",
         },

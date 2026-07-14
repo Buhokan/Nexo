@@ -4,13 +4,13 @@ import { z } from "zod";
 
 export const createTransactionSchema = z.object({
   amount: z
-    .number({ required_error: "El monto es requerido" })
+    .number({ message: "El monto es requerido" })
     .positive("El monto debe ser mayor a 0")
     .max(999_999_999, "El monto es demasiado alto"),
-  categoryId: z.string({ required_error: "Selecciona una categoría" }).min(1, "Selecciona una categoría"),
+  categoryId: z.string().min(1, "Selecciona una categoría"),
   type: z.enum(["EXPENSE", "INCOME", "TRANSFER"]).default("EXPENSE"),
   description: z
-    .string({ required_error: "La descripción es requerida" })
+    .string({ message: "La descripción es requerida" })
     .min(1, "La descripción es requerida")
     .max(100, "Máximo 100 caracteres"),
   notes: z.string().max(500, "Máximo 500 caracteres").optional(),
@@ -33,7 +33,7 @@ export type UpdateTransactionInput = z.infer<typeof updateTransactionSchema>;
 
 export const createCategorySchema = z.object({
   name: z
-    .string({ required_error: "El nombre es requerido" })
+    .string({ message: "El nombre es requerido" })
     .min(1, "El nombre es requerido")
     .max(50, "Máximo 50 caracteres"),
   emoji: z.string().min(1, "Selecciona un emoji").default("📦"),
@@ -56,12 +56,12 @@ export type UpdateCategoryInput = z.infer<typeof updateCategorySchema>;
 
 export const createGoalSchema = z.object({
   name: z
-    .string({ required_error: "El nombre es requerido" })
+    .string({ message: "El nombre es requerido" })
     .min(1, "El nombre es requerido")
     .max(100),
   description: z.string().max(500).optional(),
   targetAmount: z
-    .number({ required_error: "La meta es requerida" })
+    .number({ message: "La meta es requerida" })
     .positive("La meta debe ser mayor a 0"),
   currentAmount: z.number().min(0).default(0),
   deadline: z.date().optional(),
